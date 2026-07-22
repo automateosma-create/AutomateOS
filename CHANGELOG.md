@@ -6,6 +6,11 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 ## [Unreleased]
 
+### Added
+
+- Canonical phased implementation roadmap covering dependencies, entry conditions, deliverables, validation, exit criteria, deferred scope, and cross-phase production requirements.
+- Roadmap index under `docs/roadmap/`.
+
 ### Planned
 
 - Safe Google Calendar deletion.
@@ -16,7 +21,7 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 - Daily briefing generation and delivery.
 - Mac mini and future mobile presentation surfaces.
 - Incremental learning from actual durations, completion patterns, context, and energy.
-- Phased implementation roadmap and long-term documentation-maintenance rules.
+- Long-term documentation-maintenance rules.
 
 ## [0.1.0-baseline] - 2026-07-22
 
@@ -61,7 +66,7 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 ### Changed
 
-- Documentation progress advanced from the initial foundation to 15 of 18 Version 0.1 baseline steps.
+- Documentation progress advanced from the initial foundation to 16 of 18 Version 0.1 baseline steps.
 - The master tracker was expanded with practical workflow-health requirements and a critical Calendar reconciliation rule.
 - Calendar-event reconciliation was standardized to begin with `Generated_Calendar_Events` rather than title searches.
 - Production and planned behavior were separated explicitly throughout the documentation.
