@@ -2,25 +2,27 @@
 
 **State date:** 2026-07-22  
 **Baseline:** Version 0.1 foundation  
-**Documentation progress:** 17 / 18 baseline steps completed
+**Documentation progress:** 18 / 18 baseline steps completed
 
 ## Purpose
 
-This file is the concise handoff for the current AutomateOS implementation state. It records what is in production, what has been decided but not built, the authoritative data boundaries, known limitations, and the next engineering sequence.
+This file is the concise handoff for the current AutomateOS implementation state. It records what is in production, what has been decided but not built, authoritative data boundaries, known limitations, and the next engineering sequence.
 
-GitHub is the canonical engineering source of truth. If this file conflicts with production workflow behavior, operational logs, or a later accepted architecture decision record, investigate the discrepancy and update this file rather than assuming the snapshot is current.
+GitHub is the canonical engineering source of truth. If this file conflicts with production workflow behavior, operational logs, or a later accepted Architecture Decision Record, investigate the discrepancy and update this file rather than assuming the snapshot is current.
 
 ## Maturity vocabulary
 
-- **Production** — implemented and tested.
-- **Planned** — agreed direction or contract, not yet implemented.
+- **Production** — implemented, validated, operationally observable, and documented.
+- **Planned** — agreed direction or contract that is not yet implemented and validated.
 - **Exploratory** — an idea that may change and is not an implementation commitment.
+- **Deprecated** — temporarily retained but no longer preferred for new use.
+- **Retired** — intentionally removed from active use with necessary history preserved.
 
 ## Executive state
 
-AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted architecture decision records, a phased implementation roadmap, a synchronized Notion product-and-planning hub, and two production n8n workflows.
+AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted ADRs, a phased implementation roadmap, a synchronized Notion product-and-planning hub, a documentation-maintenance policy, and two production n8n workflows.
 
-The system is not yet an end-to-end autonomous personal operating system. Calendar deletion and movement, flexible scheduling, email processing, daily briefing generation, health ingestion, and adaptive scheduling remain planned.
+The 18-step Version 0.1 documentation baseline is complete. This establishes a durable engineering and product record; it does not mean the end-to-end personal operating system is implemented. Calendar deletion and movement, flexible scheduling, email processing, daily briefing generation, health ingestion, and adaptive scheduling remain planned.
 
 ## Production workflows
 
@@ -81,7 +83,7 @@ Documented validation includes:
 - blocking UWorld during travel;
 - preservation and parsing of `AUTOMATEOS_METADATA_JSON` in Calendar descriptions.
 
-The Google Calendar create node must use `calendar_description`, not the plain user-facing `description`, or the AutomateOS metadata will be lost.
+The Google Calendar create node must use `calendar_description`, not the plain user-facing `description`, or AutomateOS metadata will be lost.
 
 ## Current architecture
 
@@ -122,9 +124,10 @@ Important messages are forwarded to the dedicated AutomateOS Gmail account. Auto
 
 ### Documentation and planning
 
-- GitHub owns engineering documentation, contracts, ADRs, implementation history, production status, and the canonical phased implementation roadmap.
-- Notion contains a synchronized product-and-planning hub with the product vision, current-state navigation, roadmap navigation, decisions, contracts, and changelog.
-- `docs/architecture/notion-product-planning-mirror.md` defines the synchronization and ownership rules.
+- GitHub owns engineering documentation, contracts, ADRs, implementation history, production status, the canonical roadmap, and documentation-maintenance rules.
+- Notion contains a synchronized product-and-planning hub with product vision, current-state navigation, roadmap navigation, decisions, contracts, changelog, and maintenance-policy navigation.
+- `docs/architecture/notion-product-planning-mirror.md` defines synchronization and ownership boundaries.
+- `docs/maintenance/documentation-maintenance-rules.md` defines required updates, completion gates, drift handling, privacy safeguards, and synchronization rules for future changes.
 - A Notion mirror does not override the GitHub record.
 
 ### Output surfaces
@@ -144,7 +147,7 @@ Current and planned surfaces share underlying state rather than owning independe
 - Flexible task records: `Tasks`
 - Rotation assignments: `Rotation_Assignments`
 - Call assignments: `Call_Assignments`
-- n8n-created calendar-event audit: `Generated_Calendar_Events`
+- n8n-created Calendar-event audit: `Generated_Calendar_Events`
 - User-visible schedule: Google Calendar
 - Active operating rules: `Rules`
 - Workflow execution results: `Automation_Log`
@@ -163,9 +166,16 @@ The repository contains:
 - error, retry, idempotency, metadata, and compatibility rules;
 - ADR-0001 through ADR-0010 covering source-of-truth boundaries, Calendar, Sheets, ChatGPT, n8n, Calendar metadata, documentation discipline, measured learning, safety, and modularity;
 - a phased implementation roadmap with dependencies, validation gates, exit criteria, and deferred scope;
-- a defined Notion mirror structure for product vision, current state, roadmap, contracts, decisions, and project history.
+- a defined Notion mirror structure for product vision, current state, roadmap, contracts, decisions, and project history;
+- a canonical documentation-maintenance policy governing future implementation and documentation changes.
 
 Production webhook clients may still rely on transitional compatibility behavior described in the API contract. New producers should provide explicit version, request, source, timestamp, and idempotency fields.
+
+## Documentation completion rule
+
+A material implementation is not complete until all applicable documentation and evidence agree with deployed behavior. Depending on the change, this includes workflow documentation, API contracts, schemas, examples, tests, health checks, ADRs, project state, changelog, roadmap status, and Notion mirrors.
+
+The full policy is defined in [`docs/maintenance/documentation-maintenance-rules.md`](docs/maintenance/documentation-maintenance-rules.md). Documentation remains proportional to risk and maturity; inapplicable boilerplate is not required.
 
 ## Safety invariants
 
@@ -174,9 +184,10 @@ Production webhook clients may still rely on transitional compatibility behavior
 - Unknown or malformed scheduling information fails conservatively.
 - Equivalent mutation requests must be idempotent.
 - Compatible overlaps must be explicit and auditable.
-- A write is not complete until its required operational and audit records are confirmed.
+- A write is not complete until required operational and audit records are confirmed.
 - Destructive, irreversible, or materially ambiguous operations require additional safeguards.
 - Production workflows must expose practical health checks and surface degraded dependencies.
+- Documentation cannot promote a planned capability to production without runtime and validation evidence.
 
 ## Known limitations
 
@@ -189,7 +200,7 @@ Production webhook clients may still rely on transitional compatibility behavior
 - Health modules are architectural plans rather than diagnostic or production systems.
 - Learning from actuals is defined, but a production personalized estimation model is not yet documented.
 - Google Sheets is appropriate for the current stage but may require migration when concurrency, transactionality, referential integrity, or query complexity materially increase.
-- The current repository baseline primarily records engineering documentation; deployment and runtime workflow artifacts should be versioned later when safe to publish without credentials or personal data.
+- The repository primarily records engineering documentation; deployment and runtime workflow artifacts should be versioned later when safe to publish without credentials or personal data.
 
 ## Immediate engineering sequence
 
@@ -203,19 +214,14 @@ The canonical order and phase gates are defined in [`docs/roadmap/phased-impleme
 6. Integrate health and performance domains conservatively.
 7. Add ambient Mac and mobile surfaces after core APIs and health endpoints are stable.
 
-## Remaining Version 0.1 documentation step
+## Version 0.1 documentation baseline
 
-1. Define documentation maintenance rules for future changes.
+All 18 Version 0.1 documentation steps were completed on 2026-07-22. Future work is no longer organized as baseline documentation steps; it proceeds through GitHub issues, the phased implementation roadmap, ADRs, and the documentation-maintenance policy.
 
-## Maintenance rule
+The baseline is a foundation for implementation, not a claim that planned product capabilities are production.
 
-Update this file when any of the following changes materially:
+## Maintenance
 
-- production workflow inventory;
-- source-of-truth ownership;
-- major component status;
-- accepted architecture;
-- roadmap phase or immediate engineering sequence;
-- known operational limitations.
+Update this file whenever production workflow inventory, source-of-truth ownership, major component status, accepted architecture, roadmap phase, immediate engineering sequence, material limitations, or security and recovery posture changes.
 
-Record the same material change in `CHANGELOG.md`. Preserve historical reasoning in ADRs rather than rewriting accepted decisions invisibly.
+Record notable changes in `CHANGELOG.md`. Preserve historical reasoning in ADRs rather than rewriting accepted decisions invisibly. Synchronize Notion after canonical GitHub records are updated.
