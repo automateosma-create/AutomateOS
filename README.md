@@ -73,17 +73,21 @@ Documentation is deliberately proportional to implementation. Production workflo
 
 ## Repository map
 
+- [`PROJECT_STATE.md`](PROJECT_STATE.md) — current implementation, limitations, and immediate handoff state
+- [`CHANGELOG.md`](CHANGELOG.md) — notable engineering and documentation history
 - `docs/architecture/constitution.md` — governing principles
 - `docs/architecture/system-overview.md` — high-level system description
 - `docs/architecture/current-architecture-and-data-flow.md` — current implementation and data paths
+- `docs/architecture/api-contracts.md` — canonical component interface contracts
+- `docs/adr/` — accepted architecture decision records
 - GitHub Issues — baseline work tracker and implementation backlog
 
 ## Status
 
-AutomateOS is in an early foundation stage. The immediate engineering sequence is:
+AutomateOS is in an early foundation stage. The current state is recorded in [`PROJECT_STATE.md`](PROJECT_STATE.md). The immediate engineering sequence is:
 
-1. document current state and source-of-truth boundaries;
-2. finish safe calendar deletion and movement workflows;
-3. implement flexible scheduling;
-4. add email classification and event extraction;
-5. build briefing, health, auditing, and learning layers incrementally.
+1. finish safe calendar deletion and movement workflows;
+2. expand the task contract and implement flexible scheduling;
+3. add email classification and event extraction;
+4. build daily briefing delivery and workflow-health reporting;
+5. add health, auditing, and learning layers incrementally.
