@@ -2,7 +2,7 @@
 
 AutomateOS is a personal operating system designed to reduce the cognitive and administrative burden of organizing and executing work and life.
 
-The system is still early-stage. Only a small number of workflows are currently in production. Documentation should distinguish clearly between what is built, what is planned, and what remains exploratory.
+The system is still early-stage. Only a small number of workflows are currently in production. Documentation distinguishes clearly between what is built, what is planned, and what remains exploratory.
 
 ## Governing objective
 
@@ -42,7 +42,7 @@ See [Current Architecture and Data Flow](docs/architecture/current-architecture-
 ## Current production workflows
 
 - **Log Actuals** — validates and records completed work in `Actuals_Log`.
-- **Place Calendar Event Safely** — evaluates calendar conflicts and creates/logs events when appropriate.
+- **Place Calendar Event Safely** — evaluates calendar conflicts and creates and logs events when appropriate.
 
 Most other capabilities remain planned.
 
@@ -69,14 +69,17 @@ These should remain coordinated views over shared underlying data, not independe
 
 ## Documentation approach
 
-Documentation is deliberately proportional to implementation. Production workflows and necessary architectural decisions receive detailed documentation. Unbuilt ideas should remain concise in the roadmap until implementation requires more detail.
+Documentation is deliberately proportional to implementation. Production workflows and necessary architectural decisions receive detailed documentation. Unbuilt ideas remain concise in the roadmap until implementation requires more detail.
 
 GitHub is the canonical engineering source. Notion provides the synchronized product vision, current-state, roadmap, decision, contract, and planning navigation described in the [Notion Product and Planning Mirror](docs/architecture/notion-product-planning-mirror.md).
+
+The 18-step Version 0.1 documentation baseline is complete. Future engineering and documentation changes follow the [Documentation Maintenance Rules](docs/maintenance/documentation-maintenance-rules.md). A material implementation is not complete until applicable contracts, workflow documentation, tests, health checks, project state, changelog, ADRs, and Notion mirrors agree with the implemented behavior.
 
 ## Repository map
 
 - [`PROJECT_STATE.md`](PROJECT_STATE.md) — current implementation, limitations, and immediate handoff state
 - [`CHANGELOG.md`](CHANGELOG.md) — notable engineering and documentation history
+- [`docs/maintenance/documentation-maintenance-rules.md`](docs/maintenance/documentation-maintenance-rules.md) — required documentation updates, review gates, drift handling, and synchronization policy
 - [`docs/roadmap/phased-implementation-roadmap.md`](docs/roadmap/phased-implementation-roadmap.md) — sequenced implementation phases, dependencies, validation, and exit gates
 - `docs/architecture/constitution.md` — governing principles
 - `docs/architecture/system-overview.md` — high-level system description
@@ -84,11 +87,11 @@ GitHub is the canonical engineering source. Notion provides the synchronized pro
 - `docs/architecture/api-contracts.md` — canonical component interface contracts
 - `docs/architecture/notion-product-planning-mirror.md` — Notion hierarchy, ownership, and synchronization rules
 - `docs/adr/` — accepted architecture decision records
-- GitHub Issues — baseline work tracker and implementation backlog
+- GitHub Issues — implementation backlog and traceable change records
 
 ## Status
 
-AutomateOS is in an early foundation stage. The current state is recorded in [`PROJECT_STATE.md`](PROJECT_STATE.md), and the implementation order is governed by the [Phased Implementation Roadmap](docs/roadmap/phased-implementation-roadmap.md).
+AutomateOS is in an early foundation stage. The documentation baseline is complete, but the full product is not. The current implementation state is recorded in [`PROJECT_STATE.md`](PROJECT_STATE.md), and implementation order is governed by the [Phased Implementation Roadmap](docs/roadmap/phased-implementation-roadmap.md).
 
 The immediate phases are:
 
