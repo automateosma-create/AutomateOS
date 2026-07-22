@@ -10,6 +10,8 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 - Canonical phased implementation roadmap covering dependencies, entry conditions, deliverables, validation, exit criteria, deferred scope, and cross-phase production requirements.
 - Roadmap index under `docs/roadmap/`.
+- Notion product-and-planning mirror specification defining product vision, current-state, roadmap, navigation, and synchronization boundaries.
+- Unified Notion product-and-planning hub with a dedicated Product Vision page and links to the existing Current State, Roadmap, ADR, API Contract, and Changelog mirrors.
 
 ### Planned
 
@@ -66,7 +68,7 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 ### Changed
 
-- Documentation progress advanced from the initial foundation to 16 of 18 Version 0.1 baseline steps.
+- Documentation progress advanced from the initial foundation to 17 of 18 Version 0.1 baseline steps.
 - The master tracker was expanded with practical workflow-health requirements and a critical Calendar reconciliation rule.
 - Calendar-event reconciliation was standardized to begin with `Generated_Calendar_Events` rather than title searches.
 - Production and planned behavior were separated explicitly throughout the documentation.
