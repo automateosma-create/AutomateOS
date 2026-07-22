@@ -1,0 +1,118 @@
+spec: NWS-1
+workflow_id: wf_log_actuals
+n8n_name: AutomateOS - Log Actuals
+version: 1.0.0
+status: production
+risk: high
+owner: AutomateOS
+last_verified: 2026-07-22
+trigger:
+  type: webhook
+  path: redacted
+artifacts:
+  spec: complete
+  manifest: complete
+  workflow_export: missing
+  code: missing
+  fixtures: missing
+systems:
+  reads:
+    - tasks
+    - generated_calendar_events
+    - actuals_log
+  writes:
+    - actuals_log
+source_of_truth:
+  primary: actuals_log
+  secondary:
+    - tasks
+    - generated_calendar_events
+credentials:
+  - alias: automateos_database
+    system: google_sheets
+    purpose: Match identifiers, detect existing actuals, and append Actuals_Log rows.
+nodes:
+  - id: N01
+    name: Webhook Trigger - exact node name pending export
+    type: webhook
+    next: [N02]
+  - id: N02
+    name: Validate and Normalize Actuals - exact node name pending export
+    type: unknown
+    reads: [webhook_payload]
+    writes: [normalized_entries]
+    next: [N03]
+  - id: N03
+    name: Match Task or Event - exact node name pending export
+    type: unknown
+    reads: [tasks, generated_calendar_events]
+    writes: [match_result]
+    next: [N04]
+  - id: N04
+    name: Detect Duplicate - exact node name pending export
+    type: unknown
+    reads: [actuals_log, idempotency_key]
+    writes: [duplicate_result]
+    next: [N05]
+  - id: N05
+    name: Route Entry Outcome - exact node name pending export
+    type: unknown
+    reads: [match_result, duplicate_result]
+    next: [N06, N07, N08]
+  - id: N06
+    name: Append Actuals Log - exact node name pending export
+    type: google_sheets
+    reads: [normalized_entries, match_result]
+    writes: [actuals_log]
+    next: [N09]
+  - id: N07
+    name: Duplicate Skipped - exact node name pending export
+    type: unknown
+    next: [N09]
+  - id: N08
+    name: Ambiguous Match - exact node name pending export
+    type: unknown
+    next: [N09]
+  - id: N09
+    name: Aggregate and Respond - exact node name pending export
+    type: respond_to_webhook
+    reads: [entry_results]
+branches:
+  - id: B01
+    condition: request is invalid or entries is empty or an entry lacks task or status
+    outcome: validation_error
+    nodes: [N02, N09]
+    mutation: []
+  - id: B02
+    condition: entry idempotency key already exists
+    outcome: duplicate_skipped
+    nodes: [N04, N05, N07, N09]
+    mutation: []
+  - id: B03
+    condition: a reliable task or generated-event match exists and the entry is not a duplicate
+    outcome: written
+    nodes: [N03, N04, N05, N06, N09]
+    mutation: [actuals_log.append]
+  - id: B04
+    condition: no reliable identifier exists and candidate matching is ambiguous
+    outcome: ambiguous_match
+    nodes: [N03, N05, N08, N09]
+    mutation: []
+  - id: B05
+    condition: google_sheets read or write fails
+    outcome: failed_or_degraded
+    nodes: [N09]
+    mutation: []
+side_effects:
+  - google_sheets.append_actuals_log
+idempotency:
+  key: entry.idempotency_key, falling back to request idempotency behavior documented by the production workflow
+  rule: Repeated entries with the same idempotency key must not create duplicate rows.
+health_check:
+  status: partial
+  notes: Production behavior is documented for structured actuals, zero preservation, partial completion, and raw payload retention. Exact active graph, Code-node source, fixtures, retries, and configured error paths remain to be captured.
+known_gaps:
+  - Sanitized active n8n export is missing.
+  - Exact node names, node types, parameters, and connections are missing.
+  - Exact Code-node source is not preserved in GitHub or the discovered Notion records.
+  - Machine-readable fixtures and health-check execution evidence are missing.
