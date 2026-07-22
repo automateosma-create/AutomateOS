@@ -6,13 +6,6 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 ## [Unreleased]
 
-### Added
-
-- Canonical phased implementation roadmap covering dependencies, entry conditions, deliverables, validation, exit criteria, deferred scope, and cross-phase production requirements.
-- Roadmap index under `docs/roadmap/`.
-- Notion product-and-planning mirror specification defining product vision, current-state, roadmap, navigation, and synchronization boundaries.
-- Unified Notion product-and-planning hub with a dedicated Product Vision page and links to the existing Current State, Roadmap, ADR, API Contract, and Changelog mirrors.
-
 ### Planned
 
 - Safe Google Calendar deletion.
@@ -23,7 +16,7 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 - Daily briefing generation and delivery.
 - Mac mini and future mobile presentation surfaces.
 - Incremental learning from actual durations, completion patterns, context, and energy.
-- Long-term documentation-maintenance rules.
+- Sanitized runtime exports, deployment configuration, automated contract tests, and behavior fixtures as production workflows mature.
 
 ## [0.1.0-baseline] - 2026-07-22
 
@@ -39,7 +32,12 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 - Canonical API contracts covering GPT, n8n, Calendar, Gmail, Sheets, Mac mini services, logging, auditing, authentication, validation, retries, idempotency, metadata, versioning, and compatibility.
 - Architecture Decision Record directory and ADR-0001 through ADR-0010.
 - `PROJECT_STATE.md` as the current implementation and handoff snapshot.
-- Notion documentation baseline, API-contract mirror, and Architecture Decision Record mirror.
+- Canonical phased implementation roadmap covering dependencies, entry conditions, deliverables, validation, exit criteria, deferred scope, and cross-phase production requirements.
+- Roadmap index under `docs/roadmap/`.
+- Notion product-and-planning mirror specification defining product vision, current-state, roadmap, navigation, and synchronization boundaries.
+- Unified Notion product-and-planning hub with a dedicated Product Vision page and links to the Current State, Roadmap, ADR, API Contract, and Changelog mirrors.
+- Canonical documentation-maintenance policy defining change triggers, completion gates, proportionality, drift handling, security, and GitHub-to-Notion synchronization.
+- Notion documentation baseline and synchronized API-contract, ADR, project-state, changelog, roadmap, product-vision, and maintenance-policy pages.
 
 ### Established
 
@@ -52,9 +50,12 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 - `Generated_Calendar_Events` as the authoritative audit trail for n8n-created Calendar events.
 - Structured `AUTOMATEOS_METADATA_JSON` Calendar descriptions for identity, conflict analysis, duplicate prevention, auditing, and future rescheduling.
 - One source of truth for each data domain and derived output surfaces that do not own competing state.
-- Safety-first calendar mutation, idempotency, conservative failure behavior, and workflow health-check requirements.
+- Safety-first Calendar mutation, idempotency, conservative failure behavior, and workflow health-check requirements.
 - Modular, loosely coupled workflows with explicit contracts.
 - Measured actuals as the future basis for adaptive duration estimates and workload planning.
+- Documentation as a completion requirement for material implementation changes.
+- Preservation of architectural history through sequential and superseding ADRs rather than silent rewrites.
+- Production status as an evidence-based state that cannot be granted by a planning or documentation label alone.
 
 ### Validated
 
@@ -68,10 +69,13 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 ### Changed
 
-- Documentation progress advanced from the initial foundation to 17 of 18 Version 0.1 baseline steps.
+- Documentation progress advanced from the initial foundation to 18 of 18 Version 0.1 baseline steps.
+- The Version 0.1 documentation baseline was formally completed while the product remained correctly labeled as early-stage with only two production workflows.
 - The master tracker was expanded with practical workflow-health requirements and a critical Calendar reconciliation rule.
 - Calendar-event reconciliation was standardized to begin with `Generated_Calendar_Events` rather than title searches.
-- Production and planned behavior were separated explicitly throughout the documentation.
+- Production, planned, exploratory, deprecated, and retired states were defined explicitly.
+- Documentation maintenance became event- and risk-driven rather than a periodic boilerplate exercise.
+- GitHub-to-Notion synchronization boundaries were formalized.
 
 ### Known limitations
 
@@ -79,7 +83,8 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 - Calendar deletion, movement, flexible scheduling, Gmail processing, daily brief generation, health ingestion, and adaptive learning remain planned.
 - `Daily_Briefs` has no defined live schema.
 - Google Sheets remains an early-stage datastore and may require a later relational migration.
-- Runtime exports, deployment configuration, and automated repository test infrastructure are not yet part of the documented foundation baseline.
+- Runtime exports, deployment configuration, and automated repository test infrastructure are not yet part of the complete engineering artifact set.
+- Completion of the documentation baseline does not represent completion of the planned product.
 
 [Unreleased]: https://github.com/automateosma-create/AutomateOS/compare/0.1.0-baseline...HEAD
 [0.1.0-baseline]: https://github.com/automateosma-create/AutomateOS/commits/main
