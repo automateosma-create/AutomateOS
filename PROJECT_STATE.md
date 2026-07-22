@@ -2,7 +2,7 @@
 
 **State date:** 2026-07-22  
 **Baseline:** Version 0.1 foundation  
-**Documentation progress:** 16 / 18 baseline steps completed
+**Documentation progress:** 17 / 18 baseline steps completed
 
 ## Purpose
 
@@ -18,7 +18,7 @@ GitHub is the canonical engineering source of truth. If this file conflicts with
 
 ## Executive state
 
-AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted architecture decision records, a phased implementation roadmap, and two production n8n workflows.
+AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted architecture decision records, a phased implementation roadmap, a synchronized Notion product-and-planning hub, and two production n8n workflows.
 
 The system is not yet an end-to-end autonomous personal operating system. Calendar deletion and movement, flexible scheduling, email processing, daily briefing generation, health ingestion, and adaptive scheduling remain planned.
 
@@ -122,8 +122,9 @@ Important messages are forwarded to the dedicated AutomateOS Gmail account. Auto
 
 ### Documentation and planning
 
-- GitHub owns engineering documentation, contracts, ADRs, implementation history, and the canonical phased implementation roadmap.
-- Notion mirrors documentation for readability and owns product-planning views, roadmap navigation, milestones, and decision navigation.
+- GitHub owns engineering documentation, contracts, ADRs, implementation history, production status, and the canonical phased implementation roadmap.
+- Notion contains a synchronized product-and-planning hub with the product vision, current-state navigation, roadmap navigation, decisions, contracts, and changelog.
+- `docs/architecture/notion-product-planning-mirror.md` defines the synchronization and ownership rules.
 - A Notion mirror does not override the GitHub record.
 
 ### Output surfaces
@@ -148,9 +149,9 @@ Current and planned surfaces share underlying state rather than owning independe
 - Active operating rules: `Rules`
 - Workflow execution results: `Automation_Log`
 - Engineering documentation and architecture history: GitHub
-- Product roadmap and planning: Notion
+- Product navigation, readable mirrors, milestones, and planning: Notion
 
-Derived dashboards, summaries, GPT responses, and future applications are views. They must not silently become competing sources of truth.
+Derived dashboards, summaries, GPT responses, Notion pages, and future applications are views. They must not silently become competing sources of truth.
 
 ## Interface and architecture baseline
 
@@ -161,7 +162,8 @@ The repository contains:
 - authentication assumptions;
 - error, retry, idempotency, metadata, and compatibility rules;
 - ADR-0001 through ADR-0010 covering source-of-truth boundaries, Calendar, Sheets, ChatGPT, n8n, Calendar metadata, documentation discipline, measured learning, safety, and modularity;
-- a phased implementation roadmap with dependencies, validation gates, exit criteria, and deferred scope.
+- a phased implementation roadmap with dependencies, validation gates, exit criteria, and deferred scope;
+- a defined Notion mirror structure for product vision, current state, roadmap, contracts, decisions, and project history.
 
 Production webhook clients may still rely on transitional compatibility behavior described in the API contract. New producers should provide explicit version, request, source, timestamp, and idempotency fields.
 
@@ -201,10 +203,9 @@ The canonical order and phase gates are defined in [`docs/roadmap/phased-impleme
 6. Integrate health and performance domains conservatively.
 7. Add ambient Mac and mobile surfaces after core APIs and health endpoints are stable.
 
-## Remaining Version 0.1 documentation steps
+## Remaining Version 0.1 documentation step
 
-1. Expand Notion to mirror product vision, roadmap, and current state.
-2. Define documentation maintenance rules for future changes.
+1. Define documentation maintenance rules for future changes.
 
 ## Maintenance rule
 
