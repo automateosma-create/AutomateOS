@@ -156,36 +156,24 @@ Where practical, system actions should be reversible and traceable.
 
 ## 15. Documentation is part of the product
 
-Every production workflow must eventually document:
+Production workflows should be documented to the level needed to operate, debug, modify, and extend them safely. Documentation should remain proportional to the maturity and complexity of the implemented system.
 
-- Purpose
-- User value
-- Trigger and inputs
-- Node-by-node behavior
-- Code
-- Validation rules
-- Outputs
-- Data dependencies
-- Failure modes
-- Logging
-- Assumptions
-- Design rationale
-- Tests
-- Future improvements
+Detailed workflow documentation may include purpose, inputs, behavior, validation, outputs, dependencies, failure modes, logging, assumptions, tests, and future improvements. These sections should be added when they provide practical value rather than as mandatory boilerplate for unbuilt features.
 
 Architectural decisions should record why they were made, not only the final implementation.
 
-## 16. Features must earn their complexity
+## 16. Features and documentation must earn their complexity
 
-Before adding a new feature, ask:
+Before adding a new feature or large document, ask:
 
 1. Does it reduce Maaz's total cognitive or administrative burden?
 2. Can it reuse existing data and interfaces?
 3. Does it create another source of truth or coordination obligation?
 4. Can deterministic logic perform the task reliably?
 5. Is the expected benefit worth its maintenance, cost, and failure modes?
+6. Is the level of documentation proportional to what has actually been built or is immediately needed?
 
-A feature that adds capability while increasing ongoing coordination is contrary to the AutomateOS mission.
+A feature or documentation layer that increases ongoing coordination without practical value is contrary to the AutomateOS mission.
 
 ## Current interpretation rule
 
@@ -196,3 +184,7 @@ When these principles conflict, prioritize them in this order:
 3. Reliability and maintainability
 4. Architectural simplicity
 5. Feature breadth and novelty
+
+## Amendment rule
+
+This constitution is a living document, not an immutable contract. Maaz may add, remove, rewrite, or reorder any principle at any time. Material changes should be committed with a short explanation so the evolution of the system remains understandable.
