@@ -1,0 +1,121 @@
+spec: NWS-1
+workflow_id: wf_place_calendar_event_safely
+n8n_name: AutomateOS - Place Calendar Event Safely
+version: 1.0.0
+status: production
+risk: critical
+owner: AutomateOS
+last_verified: 2026-07-22
+trigger:
+  type: webhook
+  path: redacted
+artifacts:
+  spec: complete
+  manifest: complete
+  workflow_export: missing
+  code: complete
+  fixtures: partial
+systems:
+  reads:
+    - google_calendar
+    - generated_calendar_events
+  writes:
+    - google_calendar
+    - generated_calendar_events
+source_of_truth:
+  primary: generated_calendar_events
+  secondary:
+    - google_calendar
+credentials:
+  - alias: google_calendar_primary
+    system: google_calendar
+    purpose: Read conflicts and create approved events.
+  - alias: automateos_database
+    system: google_sheets
+    purpose: Append the generated-event audit record.
+nodes:
+  - id: N01
+    name: Webhook Trigger - exact node name pending export
+    type: webhook
+    next: [N02]
+  - id: N02
+    name: Prepare Proposed Event
+    type: code
+    code_file: code/prepare-proposed-event.js
+    reads: [webhook_payload]
+    writes: [normalized_proposed_event]
+    next: [N03]
+  - id: N03
+    name: Calendar Conflict Search - exact node name pending export
+    type: google_calendar
+    reads: [google_calendar]
+    writes: [candidate_calendar_events]
+    next: [N04]
+  - id: N04
+    name: Decide Calendar Placement
+    type: code
+    code_file: code/decide-calendar-placement.js
+    reads: [normalized_proposed_event, candidate_calendar_events]
+    writes: [placement_decision]
+    next: [N05]
+  - id: N05
+    name: IF should_create - exact node name pending export
+    type: if
+    reads: [placement_decision]
+    next: [N06, N08]
+  - id: N06
+    name: Google Calendar Create Event - exact node name pending export
+    type: google_calendar
+    reads: [placement_decision]
+    writes: [google_calendar]
+    next: [N07]
+  - id: N07
+    name: Generated Calendar Events Append - exact node name pending export
+    type: google_sheets
+    reads: [placement_decision, google_event_id]
+    writes: [generated_calendar_events]
+    next: [N08]
+  - id: N08
+    name: Webhook Response - exact node name pending export
+    type: respond_to_webhook
+    reads: [placement_decision]
+branches:
+  - id: B01
+    condition: conflict_count == 0
+    outcome: create
+    nodes: [N06, N07, N08]
+    mutation: [google_calendar.create_event, generated_calendar_events.append]
+  - id: B02
+    condition: conflict_count > 0 and incompatible_conflict_count == 0
+    outcome: create_stacked
+    nodes: [N06, N07, N08]
+    mutation: [google_calendar.create_event, generated_calendar_events.append]
+  - id: B03
+    condition: incompatible_conflict_count > 0 and proposed.movability == fixed and every incompatible existing event movability is flexible, high, or semi_fixed
+    outcome: create_and_flag_existing_for_reschedule
+    nodes: [N06, N07, N08]
+    mutation: [google_calendar.create_event, generated_calendar_events.append]
+  - id: B04
+    condition: incompatible_conflict_count > 0 and proposed.movability == flexible
+    outcome: needs_reschedule_new_event
+    nodes: [N08]
+    mutation: []
+  - id: B05
+    condition: incompatible_conflict_count > 0 and no earlier incompatible-conflict branch matches
+    outcome: needs_review
+    nodes: [N08]
+    mutation: []
+side_effects:
+  - google_calendar.create_event
+  - google_sheets.append_generated_event
+idempotency:
+  key: generated_event_uid plus timing and metadata equivalence
+  rule: Equivalent requests must not create duplicate Calendar events.
+health_check:
+  status: partial
+  notes: Behavior has been manually validated for open-slot create, repeated UWorld conflict, travel create, podcast stacking during travel, and UWorld blocked during travel. Machine-readable fixtures and the sanitized workflow export remain to be captured.
+known_gaps:
+  - Sanitized active n8n export is missing.
+  - Exact names and parameters of non-Code nodes require export verification.
+  - The literal movability value high in the decision code may be unintended and must not be silently changed.
+  - The create_and_flag_existing_for_reschedule outcome is captured, but no separate existing-event reschedule mutation is evidenced by the preserved Code nodes.
