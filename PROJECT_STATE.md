@@ -2,7 +2,7 @@
 
 **State date:** 2026-07-22  
 **Baseline:** Version 0.1 foundation  
-**Documentation progress:** 15 / 18 baseline steps completed
+**Documentation progress:** 16 / 18 baseline steps completed
 
 ## Purpose
 
@@ -18,7 +18,7 @@ GitHub is the canonical engineering source of truth. If this file conflicts with
 
 ## Executive state
 
-AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted architecture decision records, and two production n8n workflows.
+AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted architecture decision records, a phased implementation roadmap, and two production n8n workflows.
 
 The system is not yet an end-to-end autonomous personal operating system. Calendar deletion and movement, flexible scheduling, email processing, daily briefing generation, health ingestion, and adaptive scheduling remain planned.
 
@@ -122,8 +122,8 @@ Important messages are forwarded to the dedicated AutomateOS Gmail account. Auto
 
 ### Documentation and planning
 
-- GitHub owns engineering documentation, contracts, ADRs, and implementation history.
-- Notion mirrors documentation for readability and owns product-planning views, roadmap, milestones, and decision navigation.
+- GitHub owns engineering documentation, contracts, ADRs, implementation history, and the canonical phased implementation roadmap.
+- Notion mirrors documentation for readability and owns product-planning views, roadmap navigation, milestones, and decision navigation.
 - A Notion mirror does not override the GitHub record.
 
 ### Output surfaces
@@ -160,7 +160,8 @@ The repository contains:
 - common request and response conventions;
 - authentication assumptions;
 - error, retry, idempotency, metadata, and compatibility rules;
-- ADR-0001 through ADR-0010 covering source-of-truth boundaries, Calendar, Sheets, ChatGPT, n8n, Calendar metadata, documentation discipline, measured learning, safety, and modularity.
+- ADR-0001 through ADR-0010 covering source-of-truth boundaries, Calendar, Sheets, ChatGPT, n8n, Calendar metadata, documentation discipline, measured learning, safety, and modularity;
+- a phased implementation roadmap with dependencies, validation gates, exit criteria, and deferred scope.
 
 Production webhook clients may still rely on transitional compatibility behavior described in the API contract. New producers should provide explicit version, request, source, timestamp, and idempotency fields.
 
@@ -190,21 +191,20 @@ Production webhook clients may still rely on transitional compatibility behavior
 
 ## Immediate engineering sequence
 
-1. Build safe Calendar deletion.
-2. Build safe Calendar update and movement.
-3. Expand the task contract for flexible scheduling.
-4. Implement flexible-task placement and rescheduling.
-5. Implement Gmail classification and structured extraction.
-6. Generate and deliver daily briefings with system-health status.
-7. Add actuals-based estimation and workload-learning incrementally.
+The canonical order and phase gates are defined in [`docs/roadmap/phased-implementation-roadmap.md`](docs/roadmap/phased-implementation-roadmap.md).
 
-The phased implementation roadmap remains a separate documentation step and may refine this order.
+1. Complete the safe Calendar lifecycle: deletion, update, movement, reconciliation, recovery, and health checks.
+2. Expand the task contract and implement a deterministic flexible-scheduling MVP.
+3. Add Gmail classification and structured capture in proposal-first mode.
+4. Generate daily briefings and system-health summaries from authoritative sources.
+5. Add actuals-based estimation and adaptive scheduling only after sufficient matched observations exist.
+6. Integrate health and performance domains conservatively.
+7. Add ambient Mac and mobile surfaces after core APIs and health endpoints are stable.
 
 ## Remaining Version 0.1 documentation steps
 
-1. Create the phased implementation roadmap.
-2. Expand Notion to mirror product vision, roadmap, and current state.
-3. Define documentation maintenance rules for future changes.
+1. Expand Notion to mirror product vision, roadmap, and current state.
+2. Define documentation maintenance rules for future changes.
 
 ## Maintenance rule
 
@@ -214,7 +214,7 @@ Update this file when any of the following changes materially:
 - source-of-truth ownership;
 - major component status;
 - accepted architecture;
-- immediate engineering sequence;
+- roadmap phase or immediate engineering sequence;
 - known operational limitations.
 
 Record the same material change in `CHANGELOG.md`. Preserve historical reasoning in ADRs rather than rewriting accepted decisions invisibly.
