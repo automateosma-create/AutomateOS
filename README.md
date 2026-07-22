@@ -41,8 +41,10 @@ See [Current Architecture and Data Flow](docs/architecture/current-architecture-
 
 ## Current production workflows
 
-- **Log Actuals** — validates and records completed work in `Actuals_Log`.
-- **Place Calendar Event Safely** — evaluates calendar conflicts and creates and logs events when appropriate.
+- [**Log Actuals**](docs/workflows/log-actuals/spec.md) — validates and records completed work in `Actuals_Log`.
+- [**Place Calendar Event Safely**](docs/workflows/place-calendar-event-safely/spec.md) — evaluates Calendar conflicts and creates and logs events when appropriate.
+
+All n8n workflows use the compact [NWS-1 workflow-pack standard](docs/workflows/n8n-workflow-specification-v1.md). The [workflow registry](docs/workflows/README.md) shows specification, export, code, and fixture completeness for each workflow.
 
 Most other capabilities remain planned.
 
@@ -73,12 +75,14 @@ Documentation is deliberately proportional to implementation. Production workflo
 
 GitHub is the canonical engineering source. Notion provides the synchronized product vision, current-state, roadmap, decision, contract, and planning navigation described in the [Notion Product and Planning Mirror](docs/architecture/notion-product-planning-mirror.md).
 
-The 18-step Version 0.1 documentation baseline is complete. Future engineering and documentation changes follow the [Documentation Maintenance Rules](docs/maintenance/documentation-maintenance-rules.md). A material implementation is not complete until applicable contracts, workflow documentation, tests, health checks, project state, changelog, ADRs, and Notion mirrors agree with the implemented behavior.
+The 18-step Version 0.1 documentation baseline is complete. Future engineering and documentation changes follow the [Documentation Maintenance Rules](docs/maintenance/documentation-maintenance-rules.md). A material implementation is not complete until applicable contracts, workflow packs, tests, health checks, project state, changelog, ADRs, and Notion mirrors agree with the implemented behavior.
 
 ## Repository map
 
 - [`PROJECT_STATE.md`](PROJECT_STATE.md) — current implementation, limitations, and immediate handoff state
 - [`CHANGELOG.md`](CHANGELOG.md) — notable engineering and documentation history
+- [`docs/workflows/README.md`](docs/workflows/README.md) — n8n workflow registry and artifact-completeness status
+- [`docs/workflows/n8n-workflow-specification-v1.md`](docs/workflows/n8n-workflow-specification-v1.md) — compact workflow architecture, contract, branch, code, and validation standard
 - [`docs/maintenance/documentation-maintenance-rules.md`](docs/maintenance/documentation-maintenance-rules.md) — required documentation updates, review gates, drift handling, and synchronization policy
 - [`docs/roadmap/phased-implementation-roadmap.md`](docs/roadmap/phased-implementation-roadmap.md) — sequenced implementation phases, dependencies, validation, and exit gates
 - `docs/architecture/constitution.md` — governing principles
