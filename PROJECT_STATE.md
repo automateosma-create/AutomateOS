@@ -20,7 +20,7 @@ GitHub is the canonical engineering source of truth. If this file conflicts with
 
 ## Executive state
 
-AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted ADRs, a phased implementation roadmap, a synchronized Notion product-and-planning hub, a documentation-maintenance policy, and two production n8n workflows.
+AutomateOS is in an early foundation stage. It has a defined architecture, source-of-truth model, API contract baseline, ten accepted ADRs, a phased implementation roadmap, a synchronized Notion product-and-planning hub, a documentation-maintenance policy, the NWS-1 compact n8n workflow standard, and two production n8n workflows.
 
 The 18-step Version 0.1 documentation baseline is complete. This establishes a durable engineering and product record; it does not mean the end-to-end personal operating system is implemented. Calendar deletion and movement, flexible scheduling, email processing, daily briefing generation, health ingestion, and adaptive scheduling remain planned.
 
@@ -28,7 +28,8 @@ The 18-step Version 0.1 documentation baseline is complete. This establishes a d
 
 ### Log Actuals
 
-**Status:** Production
+**Status:** Production  
+**NWS-1 pack:** [`docs/workflows/log-actuals/spec.md`](docs/workflows/log-actuals/spec.md)
 
 Current flow:
 
@@ -36,8 +37,9 @@ Current flow:
 AutomateOS GPT or approved webhook client
     -> n8n webhook
     -> validation and normalization
-    -> append to Actuals_Log
-    -> confirmed response
+    -> task or event matching and duplicate checks
+    -> append accepted entries to Actuals_Log
+    -> aggregate and return confirmed results
 ```
 
 Current behavior:
@@ -49,9 +51,20 @@ Current behavior:
 - uses the AutomateOS Database as the source of truth for actuals;
 - must avoid duplicate actuals and flag uncertain task or event matches.
 
+Current artifact completeness:
+
+- compact specification: complete;
+- machine-readable manifest: complete;
+- sanitized active n8n export: missing;
+- exact Code-node source: missing;
+- machine-readable fixtures: missing.
+
+The known contract and production behavior are documented, but the exact active graph, node parameters, Code-node implementation, retry behavior, batch semantics, and partial-failure configuration must be captured from the live n8n workflow before the pack is fully reproducible.
+
 ### Place Calendar Event Safely
 
-**Status:** Production and behavior-tested
+**Status:** Production and behavior-tested  
+**NWS-1 pack:** [`docs/workflows/place-calendar-event-safely/spec.md`](docs/workflows/place-calendar-event-safely/spec.md)
 
 Current flow:
 
@@ -84,6 +97,35 @@ Documented validation includes:
 - preservation and parsing of `AUTOMATEOS_METADATA_JSON` in Calendar descriptions.
 
 The Google Calendar create node must use `calendar_description`, not the plain user-facing `description`, or AutomateOS metadata will be lost.
+
+Current artifact completeness:
+
+- compact specification: complete;
+- machine-readable manifest: complete;
+- sanitized active n8n export: missing;
+- exact source for the two documented Code nodes: complete;
+- machine-readable fixtures: partial.
+
+Exact non-Code node names, parameters, expressions, connections, workflow settings, Code-node run modes, and configured error paths still require export verification.
+
+## n8n workflow representation
+
+All AutomateOS n8n workflows use the [n8n Workflow Specification v1](docs/workflows/n8n-workflow-specification-v1.md), abbreviated `NWS-1`.
+
+Each workflow pack separates the compact review surface from exact implementation artifacts:
+
+```text
+docs/workflows/<workflow-slug>/
+├── spec.md
+├── manifest.yaml
+├── workflow.n8n.json
+├── code/
+└── fixtures/
+```
+
+The [workflow registry](docs/workflows/README.md) records every workflow's maturity, risk, and artifact completeness. Missing code, exports, node details, or fixtures are labeled explicitly and are not reconstructed from narrative documentation.
+
+A workflow is fully reproducible only when its sanitized active export, exact Code-node source, and required fixtures have been verified against the live n8n workflow.
 
 ## Current architecture
 
@@ -124,10 +166,11 @@ Important messages are forwarded to the dedicated AutomateOS Gmail account. Auto
 
 ### Documentation and planning
 
-- GitHub owns engineering documentation, contracts, ADRs, implementation history, production status, the canonical roadmap, and documentation-maintenance rules.
-- Notion contains a synchronized product-and-planning hub with product vision, current-state navigation, roadmap navigation, decisions, contracts, changelog, and maintenance-policy navigation.
+- GitHub owns engineering documentation, contracts, ADRs, implementation history, production status, the canonical roadmap, workflow packs, and documentation-maintenance rules.
+- Notion contains a synchronized product-and-planning hub with product vision, current-state navigation, roadmap navigation, decisions, contracts, changelog, workflow-standard navigation, and maintenance-policy navigation.
 - `docs/architecture/notion-product-planning-mirror.md` defines synchronization and ownership boundaries.
 - `docs/maintenance/documentation-maintenance-rules.md` defines required updates, completion gates, drift handling, privacy safeguards, and synchronization rules for future changes.
+- `docs/workflows/n8n-workflow-specification-v1.md` defines the required compact representation and implementation-artifact structure for every n8n workflow.
 - A Notion mirror does not override the GitHub record.
 
 ### Output surfaces
@@ -151,7 +194,7 @@ Current and planned surfaces share underlying state rather than owning independe
 - User-visible schedule: Google Calendar
 - Active operating rules: `Rules`
 - Workflow execution results: `Automation_Log`
-- Engineering documentation and architecture history: GitHub
+- Engineering documentation, workflow packs, and architecture history: GitHub
 - Product navigation, readable mirrors, milestones, and planning: Notion
 
 Derived dashboards, summaries, GPT responses, Notion pages, and future applications are views. They must not silently become competing sources of truth.
@@ -166,14 +209,23 @@ The repository contains:
 - error, retry, idempotency, metadata, and compatibility rules;
 - ADR-0001 through ADR-0010 covering source-of-truth boundaries, Calendar, Sheets, ChatGPT, n8n, Calendar metadata, documentation discipline, measured learning, safety, and modularity;
 - a phased implementation roadmap with dependencies, validation gates, exit criteria, and deferred scope;
-- a defined Notion mirror structure for product vision, current state, roadmap, contracts, decisions, and project history;
-- a canonical documentation-maintenance policy governing future implementation and documentation changes.
+- a defined Notion mirror structure for product vision, current state, roadmap, contracts, decisions, workflow standards, and project history;
+- a canonical documentation-maintenance policy governing future implementation and documentation changes;
+- the NWS-1 standard, manifest schema, reusable template, workflow registry, and standardized packs for both production workflows.
 
 Production webhook clients may still rely on transitional compatibility behavior described in the API contract. New producers should provide explicit version, request, source, timestamp, and idempotency fields.
 
 ## Documentation completion rule
 
-A material implementation is not complete until all applicable documentation and evidence agree with deployed behavior. Depending on the change, this includes workflow documentation, API contracts, schemas, examples, tests, health checks, ADRs, project state, changelog, roadmap status, and Notion mirrors.
+A material implementation is not complete until all applicable documentation and evidence agree with deployed behavior. Depending on the change, this includes the NWS-1 workflow pack, API contracts, schemas, examples, tests, health checks, ADRs, project state, changelog, roadmap status, and Notion mirrors.
+
+A material n8n workflow change must synchronize:
+
+- `workflow.n8n.json` after graph, node, expression, parameter, or workflow-setting changes;
+- exact `code/` files after Code-node changes;
+- `spec.md` after contract, branch, mutation, reliability, or operational changes;
+- `manifest.yaml` after identity, status, system, node, branch, artifact, or validation changes;
+- fixtures after terminal behavior changes.
 
 The full policy is defined in [`docs/maintenance/documentation-maintenance-rules.md`](docs/maintenance/documentation-maintenance-rules.md). Documentation remains proportional to risk and maturity; inapplicable boilerplate is not required.
 
@@ -188,10 +240,14 @@ The full policy is defined in [`docs/maintenance/documentation-maintenance-rules
 - Destructive, irreversible, or materially ambiguous operations require additional safeguards.
 - Production workflows must expose practical health checks and surface degraded dependencies.
 - Documentation cannot promote a planned capability to production without runtime and validation evidence.
+- A compact workflow spec cannot substitute for a missing exact export, Code-node source, or validation fixture.
 
 ## Known limitations
 
 - Only two workflows are currently documented as production.
+- Sanitized active n8n exports are not yet preserved for either production workflow.
+- Exact `Log Actuals` Code-node source, active graph configuration, retry behavior, batch semantics, recovery behavior, and fixtures remain to be captured.
+- Exact non-Code node names and parameters for `Place Calendar Event Safely` require export verification.
 - Calendar deletion and update or movement workflows are not yet production.
 - Flexible deadline-task placement and automatic rescheduling are not yet production.
 - Gmail ingestion and extraction are planned.
@@ -200,28 +256,29 @@ The full policy is defined in [`docs/maintenance/documentation-maintenance-rules
 - Health modules are architectural plans rather than diagnostic or production systems.
 - Learning from actuals is defined, but a production personalized estimation model is not yet documented.
 - Google Sheets is appropriate for the current stage but may require migration when concurrency, transactionality, referential integrity, or query complexity materially increase.
-- The repository primarily records engineering documentation; deployment and runtime workflow artifacts should be versioned later when safe to publish without credentials or personal data.
+- Deployment configuration and broader automated repository test infrastructure are not yet part of the complete engineering artifact set.
 
 ## Immediate engineering sequence
 
 The canonical order and phase gates are defined in [`docs/roadmap/phased-implementation-roadmap.md`](docs/roadmap/phased-implementation-roadmap.md).
 
-1. Complete the safe Calendar lifecycle: deletion, update, movement, reconciliation, recovery, and health checks.
-2. Expand the task contract and implement a deterministic flexible-scheduling MVP.
-3. Add Gmail classification and structured capture in proposal-first mode.
-4. Generate daily briefings and system-health summaries from authoritative sources.
-5. Add actuals-based estimation and adaptive scheduling only after sufficient matched observations exist.
-6. Integrate health and performance domains conservatively.
-7. Add ambient Mac and mobile surfaces after core APIs and health endpoints are stable.
+1. Capture the missing sanitized production workflow exports, exact `Log Actuals` code, graph details, and fixtures tracked in GitHub Issue #25.
+2. Complete the safe Calendar lifecycle: deletion, update, movement, reconciliation, recovery, and health checks.
+3. Expand the task contract and implement a deterministic flexible-scheduling MVP.
+4. Add Gmail classification and structured capture in proposal-first mode.
+5. Generate daily briefings and system-health summaries from authoritative sources.
+6. Add actuals-based estimation and adaptive scheduling only after sufficient matched observations exist.
+7. Integrate health and performance domains conservatively.
+8. Add ambient Mac and mobile surfaces after core APIs and health endpoints are stable.
 
 ## Version 0.1 documentation baseline
 
-All 18 Version 0.1 documentation steps were completed on 2026-07-22. Future work is no longer organized as baseline documentation steps; it proceeds through GitHub issues, the phased implementation roadmap, ADRs, and the documentation-maintenance policy.
+All 18 Version 0.1 documentation steps were completed on 2026-07-22. Future work is no longer organized as baseline documentation steps; it proceeds through GitHub issues, the phased implementation roadmap, ADRs, NWS-1 workflow packs, and the documentation-maintenance policy.
 
 The baseline is a foundation for implementation, not a claim that planned product capabilities are production.
 
 ## Maintenance
 
-Update this file whenever production workflow inventory, source-of-truth ownership, major component status, accepted architecture, roadmap phase, immediate engineering sequence, material limitations, or security and recovery posture changes.
+Update this file whenever production workflow inventory, workflow artifact completeness, source-of-truth ownership, major component status, accepted architecture, roadmap phase, immediate engineering sequence, material limitations, or security and recovery posture changes.
 
 Record notable changes in `CHANGELOG.md`. Preserve historical reasoning in ADRs rather than rewriting accepted decisions invisibly. Synchronize Notion after canonical GitHub records are updated.
