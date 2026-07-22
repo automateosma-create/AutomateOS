@@ -75,6 +75,7 @@ Documentation is deliberately proportional to implementation. Production workflo
 
 - [`PROJECT_STATE.md`](PROJECT_STATE.md) — current implementation, limitations, and immediate handoff state
 - [`CHANGELOG.md`](CHANGELOG.md) — notable engineering and documentation history
+- [`docs/roadmap/phased-implementation-roadmap.md`](docs/roadmap/phased-implementation-roadmap.md) — sequenced implementation phases, dependencies, validation, and exit gates
 - `docs/architecture/constitution.md` — governing principles
 - `docs/architecture/system-overview.md` — high-level system description
 - `docs/architecture/current-architecture-and-data-flow.md` — current implementation and data paths
@@ -84,10 +85,12 @@ Documentation is deliberately proportional to implementation. Production workflo
 
 ## Status
 
-AutomateOS is in an early foundation stage. The current state is recorded in [`PROJECT_STATE.md`](PROJECT_STATE.md). The immediate engineering sequence is:
+AutomateOS is in an early foundation stage. The current state is recorded in [`PROJECT_STATE.md`](PROJECT_STATE.md), and the implementation order is governed by the [Phased Implementation Roadmap](docs/roadmap/phased-implementation-roadmap.md).
 
-1. finish safe calendar deletion and movement workflows;
+The immediate phases are:
+
+1. complete safe Calendar deletion, update, and movement;
 2. expand the task contract and implement flexible scheduling;
-3. add email classification and event extraction;
+3. add Gmail classification and structured capture;
 4. build daily briefing delivery and workflow-health reporting;
-5. add health, auditing, and learning layers incrementally.
+5. add auditing, learning, health, and ambient surfaces incrementally after their dependencies are stable.
