@@ -1,84 +1,89 @@
 # AutomateOS
 
-AutomateOS is a personal operating system designed to minimize cognitive load. Its purpose is to organize, prioritize, schedule, audit, and summarize Maaz's work and life with as little manual coordination as possible.
+AutomateOS is a personal operating system designed to reduce the cognitive and administrative burden of organizing and executing work and life.
 
-## Governing principle
+The system is still early-stage. Only a small number of workflows are currently in production. Documentation should distinguish clearly between what is built, what is planned, and what remains exploratory.
 
-The system should adapt to the user. The user should not have to coordinate manually between ChatGPT, Gmail, Google Calendar, Google Sheets, n8n, Notion, GitHub, the desktop briefing app, or the future mobile app.
+## Governing objective
 
-The preferred design is always the one that reduces total friction, even when a more technically elaborate design is possible.
+AutomateOS should minimize the amount of mental effort required to organize and execute life. The system should adapt to the user rather than requiring the user to coordinate multiple tools.
+
+Read the [AutomateOS Constitution](docs/architecture/constitution.md) for the current governing principles. It is a living, editable document.
 
 ## Primary interface
 
-The AutomateOS custom GPT is the main input and reasoning interface. Natural-language requests should be translated into structured actions and routed to deterministic workflows.
+The AutomateOS custom GPT is intended to be the primary interface for:
 
-Typical inputs include:
+- logging completed work;
+- adding and scheduling tasks;
+- moving calendar events;
+- planning days and weeks;
+- recording workouts and nutrition;
+- asking what to do next.
 
-- logging completed work or actual task duration;
-- creating, moving, or deleting calendar events;
-- recording tasks and deadlines;
-- asking what to work on next;
-- logging nutrition, workouts, energy, sleep, or barriers;
-- reviewing important emails and extracted actions.
+The GPT interprets intent and invokes deterministic n8n workflows. Google Sheets, Calendar, Gmail, GitHub, Notion, and future apps are supporting infrastructure and output surfaces.
 
-## Major components
+## Current architecture
 
-- **AutomateOS custom GPT:** primary conversational interface.
-- **n8n:** orchestration and deterministic workflow execution.
-- **Google Sheets:** operational database and audit logs.
-- **Google Calendar:** user-facing schedule.
-- **AutomateOS Gmail:** central automation inbox for forwarded important email.
-- **Google Drive:** storage for the operational database and supporting artifacts.
-- **Morning briefing:** scheduled summary of priorities, schedule, important email, health, progress, and relevant external information.
-- **Mac mini desktop app:** passive display surface for the morning briefing and periodic status refreshes.
-- **Future mobile app:** mobile view and controlled input surface over the same underlying data.
-- **GitHub:** canonical engineering documentation, code, schemas, workflow exports, and project state.
-- **Notion:** product roadmap, backlog, milestones, and higher-level planning.
+```text
+User / forwarded email
+        ↓
+AutomateOS custom GPT or n8n trigger
+        ↓
+n8n orchestration and deterministic logic
+        ↓
+Google Sheets operational database
+        ↓
+Google Calendar and other output surfaces
+```
+
+See [Current Architecture and Data Flow](docs/architecture/current-architecture-and-data-flow.md) for the implementation-level view.
 
 ## Current production workflows
 
-### Log Actuals
+- **Log Actuals** — validates and records completed work in `Actuals_Log`.
+- **Place Calendar Event Safely** — evaluates calendar conflicts and creates/logs events when appropriate.
 
-Accepts structured activity logs and appends them to `Actuals_Log`. It records planned versus actual quantity, duration, status, barriers, energy, context, notes, and raw input.
+Most other capabilities remain planned.
 
-### Place Calendar Event Safely
+## Important source-of-truth rule
 
-Accepts a proposed event, checks conflicts, evaluates stackability and movability, creates the event when appropriate, and logs the result to `Generated_Calendar_Events`.
+Google Calendar is the user-facing schedule. The `Generated_Calendar_Events` sheet is the authoritative audit log for events created by n8n.
 
-## Calendar source-of-truth rule
+Calendar event titles are natural titles such as `UWorld` or `Travel`; they are not identified by placing “AutomateOS” in the title. When investigating generated events, inspect `Generated_Calendar_Events` first and use its Google event ID and title.
 
-Google Calendar is the schedule display, but it is not the authoritative audit history of n8n activity.
+## Email component
 
-When inspecting what AutomateOS created, moved, or intends to reconcile, check the `Generated_Calendar_Events` sheet first. It contains the event title, Google event ID, timestamps, category, status, and source assignment information.
+Important emails from existing accounts are forwarded to the dedicated AutomateOS Gmail account associated with the Calendar and Drive infrastructure. The planned email-processing workflow will analyze those messages for events, schedule changes, deadlines, tasks, travel, bills, and briefing content.
 
-Calendar events do not need to contain the phrase `AutomateOS`. Their actual titles are recorded in the log sheet.
+## Planned output surfaces
 
-## Email ingestion
+- Google Calendar
+- AutomateOS custom GPT
+- Morning briefing
+- Mac mini desktop dashboard
+- Future iPhone app
+- Notifications and selected email summaries
 
-Important messages from existing personal and work accounts are forwarded automatically to the dedicated AutomateOS Gmail account. The system analyzes them for meetings, deadlines, tasks, residency and fellowship updates, bills, travel, orders, financial notices, and morning-briefing content.
+These should remain coordinated views over shared underlying data, not independent systems.
 
-The user should not need to copy information manually from email into another system.
+## Documentation approach
 
-## Refresh model
+Documentation is deliberately proportional to implementation. Production workflows and necessary architectural decisions receive detailed documentation. Unbuilt ideas should remain concise in the roadmap until implementation requires more detail.
 
-AutomateOS uses event-driven execution where needed, but many reconciliation and briefing workflows can refresh approximately every four to six hours. This balances convenience, cost, and complexity.
+## Repository map
 
-## Auditing and learning
-
-AutomateOS is intended to learn from actual behavior. It should compare estimates with outcomes and progressively improve scheduling.
-
-Key measurements include task completion rate, on-time completion rate, estimated versus actual duration, completion by project and category, performance by time of day and energy level, repeated barriers, and study, research, workout, and nutrition adherence.
-
-## Health integration
-
-Nutrition, workouts, sleep, energy, stress, and recovery are part of the same operating system. They should influence planning rather than live in disconnected trackers.
-
-## Documentation
-
-- [AutomateOS Constitution](docs/architecture/constitution.md)
-- [System Overview](docs/architecture/system-overview.md)
-- [Master Documentation Tracker](https://github.com/automateosma-create/AutomateOS/issues/1)
+- `docs/architecture/constitution.md` — governing principles
+- `docs/architecture/system-overview.md` — high-level system description
+- `docs/architecture/current-architecture-and-data-flow.md` — current implementation and data paths
+- GitHub Issues — baseline work tracker and implementation backlog
 
 ## Status
 
-AutomateOS is under active development. The operational Google Sheets database and two foundational n8n workflows are functioning. The immediate focus is documenting the current system accurately before expanding calendar mutation, flexible scheduling, auditing, briefings, email processing, and health modules.
+AutomateOS is in an early foundation stage. The immediate engineering sequence is:
+
+1. document current state and source-of-truth boundaries;
+2. finish safe calendar deletion and movement workflows;
+3. implement flexible scheduling;
+4. add email classification and event extraction;
+5. build briefing, health, auditing, and learning layers incrementally.
