@@ -6,6 +6,26 @@ The format is based on Keep a Changelog. AutomateOS has not yet reached a stable
 
 ## [Unreleased]
 
+### Added
+
+- AutomateOS n8n Workflow Specification v1 (`NWS-1`) for compact, standardized workflow packs.
+- Machine-readable NWS-1 manifest JSON Schema and reusable workflow-pack template.
+- Workflow registry showing specification, export, Code-node, and fixture completeness.
+- NWS-1 packs for `Place Calendar Event Safely` and `Log Actuals`.
+- Exact preserved JavaScript for the two documented `Place Calendar Event Safely` Code nodes.
+
+### Changed
+
+- Existing narrative workflow pages now route to the standardized NWS-1 packs.
+- Workflow documentation now separates the five-minute human review surface from exact sanitized n8n exports, Code-node files, and fixtures.
+- Missing implementation artifacts are recorded explicitly rather than reconstructed from prose.
+
+### Known gaps
+
+- Sanitized active n8n exports are not yet preserved for the two production workflows.
+- Exact `Log Actuals` Code-node source, node graph, retry behavior, and machine-readable fixtures remain to be captured.
+- Exact non-Code node names and parameters for `Place Calendar Event Safely` require export verification.
+
 ### Planned
 
 - Safe Google Calendar deletion.
