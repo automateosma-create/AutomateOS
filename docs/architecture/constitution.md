@@ -108,7 +108,13 @@ When calendar state is unclear, inspect the appropriate log sheet before guessin
 
 Blocked, failed, superseded, deleted, or rescheduled actions should eventually be logged as carefully as successful actions.
 
-## 10. Learn from plans versus reality
+## 10. Workflows must prove they are healthy
+
+Every production workflow must have a practical test or health-check function that verifies its critical dependencies, recent execution, expected outputs, and logging.
+
+A concise system-health check should run as part of the daily workflow. Healthy systems may remain quiet or appear as a brief status line. Degraded or failed systems must be surfaced clearly with the affected workflow and the next useful action.
+
+## 11. Learn from plans versus reality
 
 AutomateOS should compare estimated work with actual execution and gradually build a personalized model of Maaz's behavior.
 
@@ -128,13 +134,13 @@ Relevant measurements include:
 
 This information should improve future estimates, scheduling, workload limits, and recommendations. The goal is not surveillance or decorative dashboards. The goal is increasingly realistic planning with less user effort.
 
-## 11. Measure execution, not merely intention
+## 12. Measure execution, not merely intention
 
 The system should track how much of the planned work is actually completed over daily, weekly, monthly, project, and category time horizons.
 
 Metrics should be selected because they help AutomateOS make better decisions or help Maaz understand meaningful patterns. Avoid metrics that create manual logging burden without actionable value.
 
-## 12. Health is part of the operating system
+## 13. Health is part of the operating system
 
 Nutrition, workouts, sleep, energy, stress, recovery, body weight, and related health behaviors are not isolated trackers. They are first-class AutomateOS domains.
 
@@ -142,19 +148,19 @@ Health information may affect scheduling and recommendations. For example, sleep
 
 Logging should be conversational and low-friction whenever possible.
 
-## 13. AutomateOS is an executive assistant, not a passive task list
+## 14. AutomateOS is an executive assistant, not a passive task list
 
 AutomateOS should actively reconcile constraints, identify conflicts, estimate work, schedule flexible tasks, monitor deadlines, learn from outcomes, and surface decisions.
 
 It should not merely store tasks and wait for Maaz to manually organize them.
 
-## 14. Human authority and safe reversibility
+## 15. Human authority and safe reversibility
 
 Maaz remains the final authority over the system. Routine, well-defined, low-risk operations should not require repetitive approval. Ambiguous, consequential, or irreversible actions should be surfaced clearly.
 
 Where practical, system actions should be reversible and traceable.
 
-## 15. Documentation is part of the product
+## 16. Documentation is part of the product
 
 Production workflows should be documented to the level needed to operate, debug, modify, and extend them safely. Documentation should remain proportional to the maturity and complexity of the implemented system.
 
@@ -162,7 +168,7 @@ Detailed workflow documentation may include purpose, inputs, behavior, validatio
 
 Architectural decisions should record why they were made, not only the final implementation.
 
-## 16. Features and documentation must earn their complexity
+## 17. Features and documentation must earn their complexity
 
 Before adding a new feature or large document, ask:
 
