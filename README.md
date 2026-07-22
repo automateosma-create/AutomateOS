@@ -71,6 +71,8 @@ These should remain coordinated views over shared underlying data, not independe
 
 Documentation is deliberately proportional to implementation. Production workflows and necessary architectural decisions receive detailed documentation. Unbuilt ideas should remain concise in the roadmap until implementation requires more detail.
 
+GitHub is the canonical engineering source. Notion provides the synchronized product vision, current-state, roadmap, decision, contract, and planning navigation described in the [Notion Product and Planning Mirror](docs/architecture/notion-product-planning-mirror.md).
+
 ## Repository map
 
 - [`PROJECT_STATE.md`](PROJECT_STATE.md) — current implementation, limitations, and immediate handoff state
@@ -80,6 +82,7 @@ Documentation is deliberately proportional to implementation. Production workflo
 - `docs/architecture/system-overview.md` — high-level system description
 - `docs/architecture/current-architecture-and-data-flow.md` — current implementation and data paths
 - `docs/architecture/api-contracts.md` — canonical component interface contracts
+- `docs/architecture/notion-product-planning-mirror.md` — Notion hierarchy, ownership, and synchronization rules
 - `docs/adr/` — accepted architecture decision records
 - GitHub Issues — baseline work tracker and implementation backlog
 
