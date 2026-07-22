@@ -1,0 +1,2 @@
+# AutomateOS
+Automate OS documentation
